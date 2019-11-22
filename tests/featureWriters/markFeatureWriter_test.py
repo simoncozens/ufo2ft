@@ -1,6 +1,7 @@
 from __future__ import print_function, division, absolute_import, unicode_literals
 from textwrap import dedent
 import logging
+import ufo2ft.errors
 from ufo2ft.featureWriters import ast
 from ufo2ft.featureWriters.markFeatureWriter import (
     MarkFeatureWriter,
@@ -303,6 +304,24 @@ class MarkFeatureWriterTest(FeatureWriterTest):
             } mark;
             """
         )
+
+    def test_error_duplicate_insert_feature(self, testufo):
+        testufo.features.text = dedent(
+            """\
+            # testing
+
+            ### INSERT mark ###
+            ### INSERT mkmk ###
+            ### INSERT mkmk ###
+
+            # testing
+            """
+        )
+
+        writer = MarkFeatureWriter()
+        feaFile = parseLayoutFeatures(testufo)
+        with pytest.raises(ufo2ft.errors.InvalidFeaturesData):
+            writer.write(testufo, feaFile)
 
     def test_append_insert_feature(self, testufo):
         testufo.features.text = dedent(

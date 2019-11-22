@@ -5,7 +5,8 @@ from functools import partial
 import itertools
 from fontTools.misc.py23 import tostr, tounicode
 from fontTools.misc.fixedTools import otRound
-from ufo2ft.featureWriters import BaseFeatureWriter, ast, findFeatureInsertionMarkers
+import ufo2ft.featureWriters
+from ufo2ft.featureWriters import BaseFeatureWriter, ast
 from ufo2ft.util import unicodeInScripts, classifyGlyphs
 from ufo2ft.errors import InvalidFeaturesData
 
@@ -694,7 +695,7 @@ class MarkFeatureWriter(BaseFeatureWriter):
 
         feaFile = self.context.feaFile
 
-        insertion_tag2index = findFeatureInsertionMarkers(feaFile)
+        insertion_tag2index = ufo2ft.featureWriters.findFeatureInsertionMarkers(feaFile)
 
         if insertion_tag2index:
             # Write the class definitions at the first feature insertion point,

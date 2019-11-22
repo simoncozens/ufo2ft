@@ -2,6 +2,8 @@ from __future__ import print_function, absolute_import, division, unicode_litera
 from .baseFeatureWriter import BaseFeatureWriter
 from .kernFeatureWriter import KernFeatureWriter
 from .markFeatureWriter import MarkFeatureWriter
+from ufo2ft.errors import InvalidFeaturesData
+from collections import OrderedDict
 
 import importlib
 import re
@@ -166,7 +168,7 @@ def findFeatureInsertionMarkers(feaFile):
     # type: (ast.FeatureFile) -> Dict[str, int]
     """Return a mapping of insertion markers of features to their index
     position in the FeatureFile statements AST."""
-    insertion_tag2index = {}
+    insertion_tag2index = OrderedDict()
     for index, statement in enumerate(feaFile.statements):
         if isinstance(statement, ast.Comment) and statement.text.startswith(
             "### INSERT"
